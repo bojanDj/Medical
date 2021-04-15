@@ -1,5 +1,9 @@
 (ns medic.store
-  (:require [com.stuartsierra.component :as component]))
+  (:require [com.stuartsierra.component :as component]
+            [clojure.data.json :as json]))
+
+(defn read_txt []
+   (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
 
 (defrecord InMemoryStore [data]
 

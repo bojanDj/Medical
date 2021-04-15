@@ -12,7 +12,7 @@
 (defn index 
   "Handler for route /index"
   [request]
-    (res/response (view/index)))
+    (res/response (view/index (store/read_txt))))
 
 
 (defn handler 

@@ -12,4 +12,5 @@
                  [bidi "2.1.3"]
                  [ring/ring-mock "0.3.2"]
                  [ring/ring-jetty-adapter "1.8.1"]
-                 [ring/ring-core "1.8.1"]])
+                 [ring/ring-core "1.8.1"]
+                 [org.clojure/data.json "1.0.0"]])

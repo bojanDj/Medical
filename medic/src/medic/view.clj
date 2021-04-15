@@ -12,7 +12,7 @@
 
 (defn index 
   "Index page news"
-  []
+  [text]
 	(header  
-		[:p "Hello world!"]))
+		[:p text]))
   
