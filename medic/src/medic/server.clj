@@ -9,12 +9,16 @@
             [medic.config :refer :all]
             [medic.store :as store]))
 
+(def sessionID (store/getSessionID))
+
 (defn handle-post 
   "Handler for route /search if request method is POST"
-  [store request]
+  [sessionID store request]
   (let [content (get (:form-params request) "content")
+        selected (get (:form-params request) "selected")
         sub (store/add store content)]
-    (res/redirect (str "search/" sub) :see-other)))
+    (store/addFeature selected content sessionID)
+    (res/redirect "search" :see-other)))
 
 (defn handle-search 
   "Handler for route /search if request method is not POST"
@@ -24,15 +28,19 @@
 (defn search-handler 
   "Handler for route /search"
   [store request]
-  (if (= (:request-method request) :post)
-    (handle-post store request)
-    (handle-search request)))
+	  (if (= (:request-method request) :post)
+	    (handle-post sessionID store request)
+	    (handle-search request)))
 
 (defn index 
   "Handler for route /index"
   [request]
     (res/response (view/index (store/read_txt))))
 
+(defn score-handler 
+  "Handler for route /index"
+  [store request]
+    (res/response (view/score (store/analyze sessionID))))
 
 (defn handler 
   "Returns the web handler function as a closure over the
@@ -40,6 +48,7 @@
   [store]
   (make-handler ["/" {"index" (partial index)
                       "search" (partial search-handler store)
+                      "score" (partial score-handler store)
                       "" (resources {:prefix "public/"})}]))
 
 (defn app
