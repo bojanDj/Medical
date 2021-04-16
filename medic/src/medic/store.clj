@@ -5,6 +5,10 @@
 (defn read_txt []
    (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
 
+(defn add [store content]
+  (str content "+1"))
+  
+
 (defrecord InMemoryStore [data]
 
   component/Lifecycle

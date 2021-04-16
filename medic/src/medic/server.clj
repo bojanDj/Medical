@@ -9,6 +9,25 @@
             [medic.config :refer :all]
             [medic.store :as store]))
 
+(defn handle-post 
+  "Handler for route /search if request method is POST"
+  [store request]
+  (let [content (get (:form-params request) "content")
+        sub (store/add store content)]
+    (res/redirect (str "search/" sub) :see-other)))
+
+(defn handle-search 
+  "Handler for route /search if request method is not POST"
+  [request]
+  (res/response (view/index (store/read_txt))))
+
+(defn search-handler 
+  "Handler for route /search"
+  [store request]
+  (if (= (:request-method request) :post)
+    (handle-post store request)
+    (handle-search request)))
+
 (defn index 
   "Handler for route /index"
   [request]
@@ -20,6 +39,7 @@
   application component."
   [store]
   (make-handler ["/" {"index" (partial index)
+                      "search" (partial search-handler store)
                       "" (resources {:prefix "public/"})}]))
 
 (defn app
