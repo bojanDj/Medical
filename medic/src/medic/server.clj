@@ -14,10 +14,9 @@
 (defn handle-post 
   "Handler for route /search if request method is POST"
   [sessionID store request]
-  (let [content (get (:form-params request) "content")
-        selected (get (:form-params request) "selected")
-        sub (store/add store content)]
-    (store/addFeature selected content sessionID)
+  (let [input (get (:form-params request) "content")
+        drop (get (:form-params request) "drop")]
+    (store/addFeature input drop sessionID)
     (res/redirect "search" :see-other)))
 
 (defn handle-search 
@@ -37,6 +36,12 @@
   [request]
     (res/response (view/index (store/read_txt))))
 
+(defn about 
+  "Handler for route /index"
+  [request]
+  (let [url "http://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=5c9694ca2b7147039cd6614c21cb361c"]
+    (res/response (view/about (store/getTopNews url)))))
+
 (defn score-handler 
   "Handler for route /index"
   [store request]
@@ -49,6 +54,7 @@
   (make-handler ["/" {"index" (partial index)
                       "search" (partial search-handler store)
                       "score" (partial score-handler store)
+                      "about" (partial about)
                       "" (resources {:prefix "public/"})}]))
 
 (defn app

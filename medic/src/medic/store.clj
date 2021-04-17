@@ -32,19 +32,29 @@
   (let [url (str baseUrl "InitSession")]
     (open-connection url)))
     
-(defn addFeature [name value sessionID]
-  (let [url (str baseUrl "UpdateFeature?SessionID=" sessionID "&name=" name "&value=" value)]
+(defn read_txt []
+   (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
+
+(defn getValue [text]
+  (let [json (read_txt)]
+    (for [x (range 0 4)]
+      (if (= (get-in json [x :text]) text)
+       (get-in json [x :name])))))
+
+(defn addFeature [input drop sessionID]
+  (let [name (getValue drop)
+    url (str baseUrl "UpdateFeature?SessionID=" sessionID "&name=" name "&value=" input)]
    (open-connection url)))
 
 (defn analyze [sessionID]
   (let [url (str baseUrl "Analyze?SessionID=" sessionID)]
    (open-connection url)))
 
-(defn read_txt []
-   (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
-
 (defn add [store content]
   (str content "+1"))
+
+(defn getTopNews [url]
+  (open-connection url))
 
 (defrecord InMemoryStore [data]
 
