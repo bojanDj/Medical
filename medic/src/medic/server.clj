@@ -22,7 +22,7 @@
 (defn handle-search 
   "Handler for route /search if request method is not POST"
   [request]
-  (res/response (view/index (store/read_txt))))
+  (res/response (view/search (store/read_txt))))
 
 (defn search-handler 
   "Handler for route /search"
@@ -31,21 +31,16 @@
 	    (handle-post sessionID store request)
 	    (handle-search request)))
 
-(defn index 
-  "Handler for route /index"
-  [request]
-    (res/response (view/index (store/read_txt))))
-
-(defn about 
-  "Handler for route /index"
-  [request]
-  (let [url "http://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=5c9694ca2b7147039cd6614c21cb361c"]
-    (res/response (view/about (store/getTopNews url)))))
-
 (defn score-handler 
   "Handler for route /index"
   [store request]
     (res/response (view/score (store/analyze sessionID))))
+
+(defn index 
+  "Handler for route /index"
+  [request]
+  (let [url "http://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=5c9694ca2b7147039cd6614c21cb361c"]
+    (res/response (view/index (store/getTopNews url)))))
 
 (defn handler 
   "Returns the web handler function as a closure over the
@@ -54,7 +49,6 @@
   (make-handler ["/" {"index" (partial index)
                       "search" (partial search-handler store)
                       "score" (partial score-handler store)
-                      "about" (partial about)
                       "" (resources {:prefix "public/"})}]))
 
 (defn app

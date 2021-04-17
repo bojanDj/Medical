@@ -12,8 +12,7 @@
    (while (.hasNext sc) (do (def inline (str inline (.nextLine sc)))))
    (.close sc)
    (let [json (json/read-str inline :key-fn keyword)]
-     json
-     )))
+     json)))
 
 (defn open-connection
   "Opens connection with api"
