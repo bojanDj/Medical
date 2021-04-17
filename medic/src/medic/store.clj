@@ -1,6 +1,7 @@
 (ns medic.store
   (:require [com.stuartsierra.component :as component]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojure.string :as str]))
 
 (def baseUrl "http://api.endlessmedical.com/v1/dx/")
 
@@ -34,16 +35,23 @@
 (defn read_txt []
    (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
 
-(defn getValue [text]
+(defn getValue [text name]
   (let [json (read_txt)]
     (for [x (range 0 4)]
       (if (= (get-in json [x :text]) text)
-       (get-in json [x :name])))))
+       (get-in json [x (keyword name)])))))
 
 (defn addFeature [input drop sessionID]
-  (let [name (getValue drop)
-    url (str baseUrl "UpdateFeature?SessionID=" sessionID "&name=" name "&value=" input)]
-   (open-connection url)))
+  (let [name (getValue drop "name")
+        min (getValue drop "min")
+        max (getValue drop "max")
+        url (str baseUrl "UpdateFeature?SessionID=" sessionID "&name=" name "&value=" input)]
+   (if (< (Double/parseDouble input) (Double/parseDouble (str/join max)))
+     (if ( > (Double/parseDouble input) (Double/parseDouble (str/join min)))
+       (let [json (open-connection url)]
+         (str "Symptom inputed."))
+       (str "Symptom must be higher then " (str/join min) " and lower then " (str/join max)))
+     (str "Symptom must be higher then " (str/join min) " and lower then " (str/join max)))))
 
 (defn analyze [sessionID]
   (let [url (str baseUrl "Analyze?SessionID=" sessionID)]

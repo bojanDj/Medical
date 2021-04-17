@@ -3,22 +3,6 @@
             [hiccup.form :refer [form-to text-area submit-button text-field drop-down]]
             [hiccup.element :refer [link-to]]))
 
-(defn header 
-  "Header of pages"
-  [text]
-  (html5 [:head
-          [:title "Medic"]"\t" 
-					[:meta {:charset "UTF-8"}]"\t" 
-         [:body
-         text]]))
-
-(defn score 
-  "Score page"
-  [text]
-	(header text))
-
-
-;proba
 (defn header2  
   "Header of pages"
   [text]
@@ -48,6 +32,11 @@
   [:script {:src "js/templatemo.js"}]
   [:script {:src "js/custom.js"}]]
     [:body text]))
+
+(defn score 
+  "Score page"
+  [text]
+	(header2 text))
 
 (defn index [text]
   (header2 
@@ -195,8 +184,8 @@
     [:i.fas.fa-chevron-right]]]]))
 
 (defn search 
-  "Index page"
-  [par]
+  "Search page"
+  [par message]
 	(header2
    [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light
@@ -286,6 +275,7 @@
        [:i.fa.fa-fw.fa-search.text-white]]]]]]
   [:div {:class "form"}
 		(form-to [:post "/search"]
+         [:p {:style "color: #0d6efd;"} message]
          (text-field {:id "form-search" :placeholder "Type answare..."} "content")
          [:div]
          (drop-down :drop (map :text par) "selected")

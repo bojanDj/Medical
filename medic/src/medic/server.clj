@@ -16,13 +16,15 @@
   [sessionID store request]
   (let [input (get (:form-params request) "content")
         drop (get (:form-params request) "drop")]
-    (store/addFeature input drop sessionID)
-    (res/redirect "search" :see-other)))
+    ;(store/addFeature input drop sessionID)
+    ;(res/redirect "search" :see-other)
+    (res/response (view/search (store/read_txt) (store/addFeature input drop sessionID)))
+    ))
 
 (defn handle-search 
   "Handler for route /search if request method is not POST"
   [request]
-  (res/response (view/search (store/read_txt))))
+  (res/response (view/search (store/read_txt) "")))
 
 (defn search-handler 
   "Handler for route /search"
