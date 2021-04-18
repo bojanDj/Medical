@@ -36,7 +36,98 @@
 (defn score 
   "Score page"
   [text]
-	(header2 text))
+	(header2 
+    [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
+  [:div.container.text-light
+   [:div.w-100.d-flex.justify-content-between
+    [:div
+     [:i.fa.fa-envelope.mx-2]
+     [:a.navbar-sm-brand.text-light.text-decoration-none
+      {:href "mailto:info@company.com"}
+      "info@company.com"]
+     [:i.fa.fa-phone.mx-2]
+     [:a.navbar-sm-brand.text-light.text-decoration-none
+      {:href "tel:010-020-0340"}
+      "010-020-0340"]]
+    [:div
+     [:a.text-light
+      {:rel "sponsored",
+       :target "_blank",
+       :href "https://fb.com/templatemo"}
+      [:i.fab.fa-facebook-f.fa-sm.fa-fw.me-2]]
+     [:a.text-light
+      {:target "_blank", :href "https://www.instagram.com/"}
+      [:i.fab.fa-instagram.fa-sm.fa-fw.me-2]]
+     [:a.text-light
+      {:target "_blank", :href "https://twitter.com/"}
+      [:i.fab.fa-twitter.fa-sm.fa-fw.me-2]]
+     [:a.text-light
+      {:target "_blank", :href "https://www.linkedin.com/"}
+      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]
+  [:nav.navbar.navbar-expand-lg.navbar-light.shadow
+   [:div.container.d-flex.justify-content-between.align-items-center
+    [:a.navbar-brand.text-success.logo.h1.align-self-center
+     {:href "index.html"}
+     "\n                Zay\n            "]
+    [:button.navbar-toggler.border-0
+     {:aria-label "Toggle navigation",
+      :aria-expanded "false",
+      :aria-controls "navbarSupportedContent",
+      :data-bs-target "#templatemo_main_nav",
+      :data-bs-toggle "collapse",
+      :type "button"}
+     [:span.navbar-toggler-icon]]
+    [:div#templatemo_main_nav.align-self-center.collapse.navbar-collapse.flex-fill.d-lg-flex.justify-content-lg-between
+     [:div.flex-fill
+      [:ul.nav.navbar-nav.d-flex.justify-content-between.mx-lg-auto
+       [:li.nav-item [:a.nav-link {:href "index.html"} "Home"]]
+       [:li.nav-item [:a.nav-link {:href "about.html"} "About"]]
+       [:li.nav-item [:a.nav-link {:href "shop.html"} "Shop"]]
+       [:li.nav-item [:a.nav-link {:href "contact.html"} "Contact"]]]]
+     [:div.navbar.align-self-center.d-flex
+      [:div.d-lg-none.flex-sm-fill.mt-3.mb-4.col-7.col-sm-auto.pr-3
+       [:div.input-group
+        [:input#inputMobileSearch.form-control
+         {:placeholder "Search ...", :type "text"}]
+        [:div.input-group-text [:i.fa.fa-fw.fa-search]]]]
+      [:a.nav-icon.d-none.d-lg-inline
+       {:data-bs-target "#templatemo_search",
+        :data-bs-toggle "modal",
+        :href "#"}
+       [:i.fa.fa-fw.fa-search.text-dark.mr-2]]
+      [:a.nav-icon.position-relative.text-decoration-none
+       {:href "#"}
+       [:i.fa.fa-fw.fa-cart-arrow-down.text-dark.mr-1]
+       [:span.position-absolute.top-0.left-100.translate-middle.badge.rounded-pill.bg-light.text-dark
+        "7"]]
+      [:a.nav-icon.position-relative.text-decoration-none
+       {:href "#"}
+       [:i.fa.fa-fw.fa-user.text-dark.mr-3]
+       [:span.position-absolute.top-0.left-100.translate-middle.badge.rounded-pill.bg-light.text-dark
+        "+99"]]]]]]
+  [:div#templatemo_search.modal.fade.bg-white
+   {:aria-hidden "true",
+    :aria-labelledby "exampleModalLabel",
+    :role "dialog",
+    :tabindex "-1"}
+   [:div.modal-dialog.modal-lg
+    {:role "document"}
+    [:div.w-100.pt-1.mb-5.text-right
+     [:button.btn-close
+      {:aria-label "Close", :data-bs-dismiss "modal", :type "button"}]]
+    [:form.modal-content.modal-body.border-0.p-0
+     {:method "get", :action ""}
+     [:div.input-group.mb-2
+      [:input#inputModalSearch.form-control
+       {:placeholder "Search ...", :name "q", :type "text"}]
+      [:button.input-group-text.bg-success.text-light
+       {:type "submit"}
+       [:i.fa.fa-fw.fa-search.text-white]]]]]]
+  (for [x (range 1 10)]
+   [:p {:style "color: #0d6efd;"}  (get-in text [:Diseases x])])
+ ; (doseq [{k v} text] 
+  ;  [:p {:style "color: #0d6efd;"} (str "D: " k " P: " v)])   [:Diseases])
+ ]))
 
 (defn index [text]
   (header2 
@@ -280,7 +371,8 @@
          [:div]
          (drop-down :drop (map :text par) "selected")
          (submit-button {:class "buttons"} "Add symphtom"))
-    (link-to {:id "search-menu":class "nav-link"} "/score" "Analyze")
+    (form-to [:post "/score"]
+          (submit-button   {:id "search-menu":class "nav-link"}  "Analyze"))
     ]
  ]
    ))

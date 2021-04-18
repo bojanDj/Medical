@@ -1,7 +1,10 @@
 (ns medic.store
   (:require [com.stuartsierra.component :as component]
             [clojure.data.json :as json]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.tools.logging :as log]
+            [clj-http.client :as client])
+  (:import java.net.URLEncoder))
 
 (def baseUrl "http://api.endlessmedical.com/v1/dx/")
 
@@ -25,12 +28,20 @@
                   (.setInstanceFollowRedirects false)
                   (.connect))]
     (if (.startsWith (str (.getResponseCode con)) "200")
-        (get-data url)
+        (get-data url) 
         map)))                
 
+(defn open-connection-post
+  "Opens connection with api"
+  [url sessionID passphrase] 
+   (log/info (client/post (str baseUrl "AcceptTermsOfUse?SessionID=" (URLEncoder/encode sessionID "UTF-8") "&passphrase=" (URLEncoder/encode passphrase "UTF-8")))))
+
 (defn getSessionID []
-  (let [url (str baseUrl "InitSession")]
-    (open-connection url)))
+  (let [urlSession (str baseUrl "InitSession")
+        terms "I have read, understood and I accept and agree to comply with the Terms of Use of EndlessMedicalAPI and Endless Medical services. The Terms of Use are available on endlessmedical.com"
+        sessionID ((open-connection urlSession) :SessionID)]
+    (open-connection-post (str baseUrl "AcceptTermsOfUse") sessionID terms)
+    sessionID))
     
 (defn read_txt []
    (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
@@ -55,6 +66,7 @@
 
 (defn analyze [sessionID]
   (let [url (str baseUrl "Analyze?SessionID=" sessionID)]
+   (log/info url)
    (open-connection url)))
 
 (defn add [store content]
