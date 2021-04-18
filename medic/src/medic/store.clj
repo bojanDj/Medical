@@ -56,18 +56,26 @@
   (let [name (getValue drop "name")
         min (getValue drop "min")
         max (getValue drop "max")
+        cho (getValue drop "choices")
         url (str baseUrl "UpdateFeature?SessionID=" sessionID "&name=" name "&value=" input)]
-   (if (< (Double/parseDouble input) (Double/parseDouble (str/join max)))
-     (if ( > (Double/parseDouble input) (Double/parseDouble (str/join min)))
-       (let [json (open-connection url)]
-         (str "Symptom inputed."))
-       (str "Symptom must be higher then " (str/join min) " and lower then " (str/join max)))
-     (str "Symptom must be higher then " (str/join min) " and lower then " (str/join max)))))
+    (log/info (Integer/parseInt input))
+    (log/info (Integer/parseInt input))
+    (if (not (clojure.string/blank? (str/join max)))
+	   (if (< (Double/parseDouble input) (Double/parseDouble (str/join max)))
+	     (if ( > (Double/parseDouble input) (Double/parseDouble (str/join min)))
+	       (let [json (open-connection url)]
+	         (str "Symptom inputed."))
+	       (str "Symptom must be higher then " (str/join min) " and lower then " (str/join max)))
+	     (str "Symptom must be higher then " (str/join min) " and lower then " (str/join max)))
+    (if (or (= (Integer/parseInt input) 2) (= (Integer/parseInt input) 3))
+      (let [json (open-connection url)]
+        (str "Symptom inputed."))
+      (str "Type 2 if answer is No. Type 3 is answer is Yes.")))))
 
 (defn analyze [sessionID]
   (let [url (str baseUrl "Analyze?SessionID=" sessionID)]
-   (log/info url)
-   (open-connection url)))
+  (log/info url)
+  (open-connection url)))
 
 (defn add [store content]
   (str content "+1"))
