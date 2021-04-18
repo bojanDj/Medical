@@ -30,6 +30,8 @@
   [:script {:src "js/jquery-migrate-1.2.1.min.js"}]
   [:script {:src "js/bootstrap.bundle.min.js"}]
   [:script {:src "js/templatemo.js"}]
+  [:script
+   {:src "https://canvasjs.com/assets/script/canvasjs.min.js"}]
   [:script {:src "js/custom.js"}]]
     [:body text]))
 
@@ -37,6 +39,7 @@
   "Score page"
   [text]
 	(header2 
+   [:div
     [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light
    [:div.w-100.d-flex.justify-content-between
@@ -53,7 +56,7 @@
      [:a.text-light
       {:rel "sponsored",
        :target "_blank",
-       :href "https://fb.com/templatemo"}
+       :href "https://fb.com/"}
       [:i.fab.fa-facebook-f.fa-sm.fa-fw.me-2]]
      [:a.text-light
       {:target "_blank", :href "https://www.instagram.com/"}
@@ -63,12 +66,12 @@
       [:i.fab.fa-twitter.fa-sm.fa-fw.me-2]]
      [:a.text-light
       {:target "_blank", :href "https://www.linkedin.com/"}
-      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]
+      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]]
   [:nav.navbar.navbar-expand-lg.navbar-light.shadow
    [:div.container.d-flex.justify-content-between.align-items-center
     [:a.navbar-brand.text-success.logo.h1.align-self-center
      {:href "index.html"}
-     "\n                Zay\n            "]
+     "\n                Medic\n            "]
     [:button.navbar-toggler.border-0
      {:aria-label "Toggle navigation",
       :aria-expanded "false",
@@ -80,10 +83,10 @@
     [:div#templatemo_main_nav.align-self-center.collapse.navbar-collapse.flex-fill.d-lg-flex.justify-content-lg-between
      [:div.flex-fill
       [:ul.nav.navbar-nav.d-flex.justify-content-between.mx-lg-auto
-       [:li.nav-item [:a.nav-link {:href "index.html"} "Home"]]
-       [:li.nav-item [:a.nav-link {:href "about.html"} "About"]]
-       [:li.nav-item [:a.nav-link {:href "shop.html"} "Shop"]]
-       [:li.nav-item [:a.nav-link {:href "contact.html"} "Contact"]]]]
+       [:li.nav-item  (link-to {:class "nav-link"} "/index" "Home")]
+       [:li.nav-item (link-to {:class "nav-link"} "/index" "About")]
+       [:li.nav-item  (link-to {:class "nav-link"} "/search" "Search")]
+       [:li.nav-item (link-to {:class "nav-link"} "/index" "Contact")]]]
      [:div.navbar.align-self-center.d-flex
       [:div.d-lg-none.flex-sm-fill.mt-3.mb-4.col-7.col-sm-auto.pr-3
        [:div.input-group
@@ -123,14 +126,24 @@
       [:button.input-group-text.bg-success.text-light
        {:type "submit"}
        [:i.fa.fa-fw.fa-search.text-white]]]]]]
-  (for [x (range 1 10)]
-   [:p {:style "color: #0d6efd;"}  (get-in text [:Diseases x])])
- ; (doseq [{k v} text] 
-  ;  [:p {:style "color: #0d6efd;"} (str "D: " k " P: " v)])   [:Diseases])
- ]))
+  [:div.skills
+    [:ul.lines
+     [:li.line.l--25
+      [:span.line__label "\n        25%\n      "]]
+     [:li.line.l--50 [:span.line__label "\n        50%\n      "]]
+     [:li.line.l--75 [:span.line__label "\n        75%\n      "]]
+     [:li.line.l--100 [:span.line__label "\n        100%\n      "]]]
+    [:div.charts
+     [:div.chart.chart--dev
+      [:ul.chart--horiz
+       (for [x (range 1 10)]
+       [:li.chart__bar
+        {:style (str "width: " (nth (vals (get-in text [:Diseases x])) 0) "%;")}
+        [:span.chart__label (keys (get-in text [:Diseases x]))]])]]]]]))
 
 (defn index [text]
   (header2 
+    [:div
     [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light
    [:div.w-100.d-flex.justify-content-between
@@ -147,7 +160,7 @@
      [:a.text-light
       {:rel "sponsored",
        :target "_blank",
-       :href "https://fb.com/templatemo"}
+       :href "https://fb.com/"}
       [:i.fab.fa-facebook-f.fa-sm.fa-fw.me-2]]
      [:a.text-light
       {:target "_blank", :href "https://www.instagram.com/"}
@@ -157,12 +170,12 @@
       [:i.fab.fa-twitter.fa-sm.fa-fw.me-2]]
      [:a.text-light
       {:target "_blank", :href "https://www.linkedin.com/"}
-      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]
+      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]]
   [:nav.navbar.navbar-expand-lg.navbar-light.shadow
    [:div.container.d-flex.justify-content-between.align-items-center
     [:a.navbar-brand.text-success.logo.h1.align-self-center
      {:href "index.html"}
-     "\n                Zay\n            "]
+     "\n                Medic\n            "]
     [:button.navbar-toggler.border-0
      {:aria-label "Toggle navigation",
       :aria-expanded "false",
@@ -174,10 +187,10 @@
     [:div#templatemo_main_nav.align-self-center.collapse.navbar-collapse.flex-fill.d-lg-flex.justify-content-lg-between
      [:div.flex-fill
       [:ul.nav.navbar-nav.d-flex.justify-content-between.mx-lg-auto
-       [:li.nav-item [:a.nav-link {:href "index.html"} "Home"]]
-       [:li.nav-item [:a.nav-link {:href "about.html"} "About"]]
-       [:li.nav-item [:a.nav-link {:href "shop.html"} "Shop"]]
-       [:li.nav-item [:a.nav-link {:href "contact.html"} "Contact"]]]]
+       [:li.nav-item  (link-to {:class "nav-link"} "/index" "Home")]
+       [:li.nav-item (link-to {:class "nav-link"} "/index" "About")]
+       [:li.nav-item  (link-to {:class "nav-link"} "/search" "Search")]
+       [:li.nav-item (link-to {:class "nav-link"} "/index" "Contact")]]]
      [:div.navbar.align-self-center.d-flex
       [:div.d-lg-none.flex-sm-fill.mt-3.mb-4.col-7.col-sm-auto.pr-3
        [:div.input-group
@@ -278,6 +291,7 @@
   "Search page"
   [par message]
 	(header2
+   [:div
    [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light
    [:div.w-100.d-flex.justify-content-between
@@ -294,7 +308,7 @@
      [:a.text-light
       {:rel "sponsored",
        :target "_blank",
-       :href "https://fb.com/templatemo"}
+       :href "https://fb.com/"}
       [:i.fab.fa-facebook-f.fa-sm.fa-fw.me-2]]
      [:a.text-light
       {:target "_blank", :href "https://www.instagram.com/"}
@@ -304,12 +318,12 @@
       [:i.fab.fa-twitter.fa-sm.fa-fw.me-2]]
      [:a.text-light
       {:target "_blank", :href "https://www.linkedin.com/"}
-      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]
+      [:i.fab.fa-linkedin.fa-sm.fa-fw]]]]]]
   [:nav.navbar.navbar-expand-lg.navbar-light.shadow
    [:div.container.d-flex.justify-content-between.align-items-center
     [:a.navbar-brand.text-success.logo.h1.align-self-center
      {:href "index.html"}
-     "\n                Zay\n            "]
+     "\n                Medic\n            "]
     [:button.navbar-toggler.border-0
      {:aria-label "Toggle navigation",
       :aria-expanded "false",
@@ -321,10 +335,10 @@
     [:div#templatemo_main_nav.align-self-center.collapse.navbar-collapse.flex-fill.d-lg-flex.justify-content-lg-between
      [:div.flex-fill
       [:ul.nav.navbar-nav.d-flex.justify-content-between.mx-lg-auto
-       [:li.nav-item [:a.nav-link {:href "index.html"} "Home"]]
-       [:li.nav-item [:a.nav-link {:href "about.html"} "About"]]
-       [:li.nav-item [:a.nav-link {:href "shop.html"} "Shop"]]
-       [:li.nav-item [:a.nav-link {:href "contact.html"} "Contact"]]]]
+       [:li.nav-item  (link-to {:class "nav-link"} "/index" "Home")]
+       [:li.nav-item (link-to {:class "nav-link"} "/index" "About")]
+       [:li.nav-item  (link-to {:class "nav-link"} "/search" "Search")]
+       [:li.nav-item (link-to {:class "nav-link"} "/index" "Contact")]]]
      [:div.navbar.align-self-center.d-flex
       [:div.d-lg-none.flex-sm-fill.mt-3.mb-4.col-7.col-sm-auto.pr-3
        [:div.input-group
@@ -366,15 +380,13 @@
        [:i.fa.fa-fw.fa-search.text-white]]]]]]
   [:div {:class "form"}
 		(form-to [:post "/search"]
-         [:p {:style "color: #0d6efd;"} message]
+         [:p {:style "color: #59ab6e;"} message]
          (text-field {:id "form-search" :placeholder "Type answare..."} "content")
          [:div]
          (drop-down :drop (map :text par) "selected")
-         (submit-button {:class "buttons"} "Add symphtom"))
+         (submit-button {:class "btn btn-success" :id "sub1"} "Add symphtom"))
+  [:div {:id "form2"}
     (form-to [:post "/score"]
-          (submit-button   {:id "search-menu":class "nav-link"}  "Analyze"))
-    ]
- ]
-   ))
+            (submit-button   {:id "search-menu":class "btn btn-success"}  "Analyze"))]]]))
 
   
