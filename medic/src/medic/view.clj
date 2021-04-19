@@ -3,7 +3,7 @@
             [hiccup.form :refer [form-to text-area submit-button text-field drop-down]]
             [hiccup.element :refer [link-to]]))
 
-(defn header2  
+(defn header  
   "Header of pages"
   [text]
   (html5 
@@ -38,7 +38,7 @@
 (defn score 
   "Score page"
   [text]
-	(header2 
+	(header 
    [:div
     [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light
@@ -143,8 +143,10 @@
         [:span.chart__label (keys (get-in text [:Diseases x]))]
         [:br]])]]]]]))
 
-(defn index [text]
-  (header2 
+(defn index
+  "Index page"
+  [text]
+  (header 
     [:div
     [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light
@@ -292,7 +294,7 @@
 (defn search 
   "Search page"
   [par message]
-	(header2
+	(header
    [:div
    [:nav#templatemo_nav_top.navbar.navbar-expand-lg.bg-dark.navbar-light.d-none.d-lg-block
   [:div.container.text-light

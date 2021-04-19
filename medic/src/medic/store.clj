@@ -32,31 +32,39 @@
         map)))                
 
 (defn open-connection-post
-  "Opens connection with api"
+  "Opens connection with api POST"
   [url sessionID passphrase] 
    (log/info (client/post (str baseUrl "AcceptTermsOfUse?SessionID=" (URLEncoder/encode sessionID "UTF-8") "&passphrase=" (URLEncoder/encode passphrase "UTF-8")))))
 
-(defn getSessionID []
+(defn get-session-id 
+   "Gets api session id"
+  []
   (let [urlSession (str baseUrl "InitSession")
-        terms "I have read, understood and I accept and agree to comply with the Terms of Use of EndlessMedicalAPI and Endless Medical services. The Terms of Use are available on endlessmedical.com"
-        sessionID ((open-connection urlSession) :SessionID)]
-    (open-connection-post (str baseUrl "AcceptTermsOfUse") sessionID terms)
+       terms "I have read, understood and I accept and agree to comply with the Terms of Use of EndlessMedicalAPI and Endless Medical services. The Terms of Use are available on endlessmedical.com"
+       sessionID ((open-connection urlSession) :SessionID)]
+   (open-connection-post (str baseUrl "AcceptTermsOfUse") sessionID terms)
     sessionID))
     
-(defn read_txt []
+(defn read-txt 
+  "Read data from json questions file"
+  []
    (json/read-str (slurp "SymptomsOutput.json") :key-fn keyword))
 
-(defn getValue [text name]
-  (let [json (read_txt)]
+(defn get-value 
+  "Gets specific value from json questions file"
+  [text name]
+  (let [json (read-txt)]
     (for [x (range 0 4)]
       (if (= (get-in json [x :text]) text)
        (get-in json [x (keyword name)])))))
 
-(defn addFeature [input drop sessionID]
-  (let [name (getValue drop "name")
-        min (getValue drop "min")
-        max (getValue drop "max")
-        cho (getValue drop "choices")
+(defn add-feature 
+  "Adds symptom"
+  [input drop sessionID]
+  (let [name (get-value drop "name")
+        min (get-value drop "min")
+        max (get-value drop "max")
+        cho (get-value drop "choices")
         url (str baseUrl "UpdateFeature?SessionID=" sessionID "&name=" name "&value=" input)]
     (log/info (Integer/parseInt input))
     (log/info (Integer/parseInt input))
@@ -72,15 +80,16 @@
         (str "Symptom inputed."))
       (str "Type 2 if answer is No. Type 3 is answer is Yes.")))))
 
-(defn analyze [sessionID]
+(defn analyze 
+  "Analyzes symptoms and gets result"
+  [sessionID]
   (let [url (str baseUrl "Analyze?SessionID=" sessionID)]
   (log/info url)
   (open-connection url)))
 
-(defn add [store content]
-  (str content "+1"))
-
-(defn getTopNews [url]
+(defn get-top-news
+  "Gets health news from API for index page"
+  [url]
   (open-connection url))
 
 (defrecord InMemoryStore [data]
