@@ -136,10 +136,12 @@
     [:div.charts
      [:div.chart.chart--dev
       [:ul.chart--horiz
-       (for [x (range 1 10)]
+       (for [x (range 1 10)] 
+         [:div [:br]
        [:li.chart__bar
-        {:style (str "width: " (nth (vals (get-in text [:Diseases x])) 0) "%;")}
-        [:span.chart__label (keys (get-in text [:Diseases x]))]])]]]]]))
+        {:style (str "width: " (* (Double/parseDouble (nth (vals (get-in text [:Diseases x])) 0)) 100) "%;")}]
+        [:span.chart__label (keys (get-in text [:Diseases x]))]
+        [:br]])]]]]]))
 
 (defn index [text]
   (header2 
